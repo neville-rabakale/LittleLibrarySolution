@@ -7,6 +7,6 @@
         public string? Author { get; set; }
         public int Genre { get; set; }
         public bool Available { get; set; }
-        public bool HasImage { get; set; }
+        public string? Image { get; set; }
     }
 }

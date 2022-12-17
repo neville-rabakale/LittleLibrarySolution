@@ -1,17 +1,32 @@
 ﻿using LittleLibrary.Views.Book;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LittleLibrary.Models
 {
     public class DataService
     {
+        private readonly IWebHostEnvironment environment;
+        public DataService(IWebHostEnvironment environment)
+        {
+            this.environment = environment;
+        }
         //--Fake Database
         List<Book> books = new List<Book>
         {
-            new Book{ Id = 0, Author = "Viktoria", Title = "Greatest Book",  Genre =2 ,Available = false, HasImage = false},
-            new Book{ Id = 2, Author = "Neville", Title = "Adventerous Book",  Genre =2, Available = false, HasImage = false},
-            new Book{ Id = 3, Author = "Nelson", Title = "Playful Book",  Genre =3, Available = false, HasImage = false},
+            new Book{ Id = 0, Author = "Viktoria", Title = "Greatest Book",  Genre =2 ,Available = false},
+            new Book{ Id = 2, Author = "Neville", Title = "Adventerous Book",  Genre =2, Available = false},
+            new Book{ Id = 3, Author = "Nelson", Title = "Playful Book",  Genre =3, Available = false},
         };
+
+        public void UploadImage(CreateVM createVM)
+        {
+            var filePath = Path.Combine(environment.WebRootPath, "Uploads", createVM.Image.FileName);
+
+            using var fileStream = new FileStream(filePath, FileMode.Create);
+            createVM.Image.CopyTo(fileStream);
+
+        }
 
         public CreateVM GetGenre()
         {
@@ -35,14 +50,13 @@ namespace LittleLibrary.Models
                     Title = o.Title, 
                     Genre= o.Genre, 
                     Available = o.Available,
-                    HasImage = o.HasImage,
-                })
+                    HasImage = o.Image == null ? false : true
+        })
                 .ToArray();
         }
 
         public void AddBook(CreateVM createVM)
         {
-            var hasImage = createVM.Image == null ? false : true;
 
             Book book = new Book();
             book.Id = books.Count + 1;
@@ -50,7 +64,7 @@ namespace LittleLibrary.Models
             book.Title = createVM.Title;
             book.Genre = createVM.GenreValues;
             book.Available = createVM.Available;
-            book.HasImage = hasImage;
+            book.Image = createVM.Image.FileName;
 
             books.Add(book);
 
