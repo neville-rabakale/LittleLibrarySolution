@@ -1,6 +1,7 @@
 ﻿using LittleLibrary.Views.Book;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LittleLibrary.Models
 {
@@ -21,7 +22,8 @@ namespace LittleLibrary.Models
 
         public void UploadImage(CreateVM createVM)
         {
-            var filePath = Path.Combine(environment.WebRootPath, "Uploads", createVM.Image.FileName);
+           // string fileName = Guid.NewGuid().ToString();
+            var filePath = Path.Combine(environment.WebRootPath, @"images\books", createVM.Image.FileName);
 
             using var fileStream = new FileStream(filePath, FileMode.Create);
             createVM.Image.CopyTo(fileStream);
@@ -40,6 +42,11 @@ namespace LittleLibrary.Models
                 }
             };
         }
+
+        //public string getGenre(int genreValue)
+        //{
+            
+        //}
         
         public IndexVM[] GetAllBooks()
         {
@@ -48,10 +55,10 @@ namespace LittleLibrary.Models
                 {   
                     Author = o.Author, 
                     Title = o.Title, 
-                    Genre= o.Genre, 
+                    Genre= o.Genre,
                     Available = o.Available,
-                    HasImage = o.Image == null ? false : true
-        })
+                    Image = o.Image
+                })
                 .ToArray();
         }
 
@@ -59,12 +66,14 @@ namespace LittleLibrary.Models
         {
 
             Book book = new Book();
+            UploadImage(createVM);
+            var imagepath = @"images\books\"+createVM.Image.FileName;
             book.Id = books.Count + 1;
             book.Author = createVM.Author;
             book.Title = createVM.Title;
             book.Genre = createVM.GenreValues;
             book.Available = createVM.Available;
-            book.Image = createVM.Image.FileName;
+            book.Image = imagepath;
 
             books.Add(book);
 
