@@ -43,19 +43,26 @@ namespace LittleLibrary.Models
             };
         }
 
-        //public string getGenre(int genreValue)
-        //{
-            
-        //}
-        
+
+        public string GetGenreText(int value)
+        {
+            if (value == 1)
+                return "Fiction";
+            if (value == 2)
+                return "Non-Fiction";            
+            if (value == 3)
+                return "Children";
+            return "";
+        }
         public IndexVM[] GetAllBooks()
         {
+
             return books
                 .Select( o => new IndexVM 
                 {   
                     Author = o.Author, 
                     Title = o.Title, 
-                    Genre= o.Genre,
+                    Genre= GetGenreText(o.Genre),
                     Available = o.Available,
                     Image = o.Image
                 })

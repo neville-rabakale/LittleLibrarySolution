@@ -29,6 +29,10 @@ namespace LittleLibrary.Controllers
         [HttpPost("create")]
         public IActionResult Create(CreateVM createVM)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(service.GetGenre());
+            }
             service.AddBook(createVM);
             return RedirectToAction(nameof(Index));
         }
