@@ -5,6 +5,7 @@
     [Author] NVARCHAR(50) NULL, 
     [Genre] INT NOT NULL, 
     [Available] BIT NOT NULL, 
-    [Image] NVARCHAR(50) NULL
+    [Image] NVARCHAR(50) NULL, 
+    [Description] NVARCHAR(MAX) NOT NULL
 
 )

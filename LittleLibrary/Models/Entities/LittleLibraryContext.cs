@@ -17,7 +17,7 @@ public partial class LittleLibraryContext : DbContext
     {
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Books__3214EC07288B87D5");
+            entity.HasKey(e => e.Id).HasName("PK__Books__3214EC07AE73EBC4");
 
             entity.Property(e => e.Author).HasMaxLength(50);
             entity.Property(e => e.Image).HasMaxLength(50);

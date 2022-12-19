@@ -61,8 +61,8 @@ namespace LittleLibrary.Models
         {
             return context.Books
                 .Select( o => new IndexVM 
-                {   
-                    Author = o.Author, 
+                {
+                    Author = o.Author,
                     Title = o.Title, 
                     Genre= GetGenreText(o.Genre),
                     Available = o.Available,
@@ -81,6 +81,7 @@ namespace LittleLibrary.Models
             book.Genre = createVM.GenreValues;
             book.Available = createVM.Available;
             book.Image = imagepath;
+            book.Description= createVM.Description; 
 
             context.Books.Add(book);
             context.SaveChanges();

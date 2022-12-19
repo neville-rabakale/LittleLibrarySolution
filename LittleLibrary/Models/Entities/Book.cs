@@ -16,4 +16,6 @@ public partial class Book
     public bool Available { get; set; }
 
     public string? Image { get; set; }
+
+    public string Description { get; set; } = null!;
 }

@@ -19,6 +19,14 @@
                         <h4 class="card-title">Title: @item.Title</h4>
                         <h6 class="card-title">Author: @item.Author</h6>
                         <h6 class="card-title">Genre: @item.Genre</h6>
+                        @if(item.Available == true)
+                        {
+                            <h6 class="card-title text-success">Available</h6>
+                        }
+                        else
+                        {
+                            <h6 class="card-title text-danger">Unavailable</h6>
+                        }
                         <a href="#" class="btn btn-primary">Details</a>
                     </div>
                 </div>
