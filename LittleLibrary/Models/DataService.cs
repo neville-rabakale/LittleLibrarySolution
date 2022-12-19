@@ -1,4 +1,5 @@
-﻿using LittleLibrary.Views.Book;
+﻿using LittleLibrary.Models.Entities;
+using LittleLibrary.Views.Book;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static System.Net.Mime.MediaTypeNames;
@@ -8,21 +9,24 @@ namespace LittleLibrary.Models
     public class DataService
     {
         private readonly IWebHostEnvironment environment;
-        public DataService(IWebHostEnvironment environment)
+        private readonly LittleLibraryContext context;
+
+        public DataService(IWebHostEnvironment environment, LittleLibraryContext context)
         {
             this.environment = environment;
+            this.context = context;
         }
         //--Fake Database
-        List<Book> books = new List<Book>
-        {
-            new Book{ Id = 0, Author = "Viktoria", Title = "Greatest Book",  Genre =2 ,Available = false},
-            new Book{ Id = 2, Author = "Neville", Title = "Adventerous Book",  Genre =2, Available = false},
-            new Book{ Id = 3, Author = "Nelson", Title = "Playful Book",  Genre =3, Available = false},
-        };
+        //List<Book> books = new List<Book>
+        //{
+        //    new Book{ Id = 0, Author = "Viktoria", Title = "Greatest Book",  Genre =2 ,Available = false},
+        //    new Book{ Id = 2, Author = "Neville", Title = "Adventerous Book",  Genre =2, Available = false},
+        //    new Book{ Id = 3, Author = "Nelson", Title = "Playful Book",  Genre =3, Available = false},
+        //};
 
         public void UploadImage(CreateVM createVM)
         {
-           // string fileName = Guid.NewGuid().ToString();
+           // string fileName = Guid.NewGuid().ToString(); //to get a new unique file name
             var filePath = Path.Combine(environment.WebRootPath, @"images\books", createVM.Image.FileName);
 
             using var fileStream = new FileStream(filePath, FileMode.Create);
@@ -43,8 +47,7 @@ namespace LittleLibrary.Models
             };
         }
 
-
-        public string GetGenreText(int value)
+        public static string GetGenreText(int value)
         {
             if (value == 1)
                 return "Fiction";
@@ -56,8 +59,7 @@ namespace LittleLibrary.Models
         }
         public IndexVM[] GetAllBooks()
         {
-
-            return books
+            return context.Books
                 .Select( o => new IndexVM 
                 {   
                     Author = o.Author, 
@@ -71,18 +73,17 @@ namespace LittleLibrary.Models
 
         public void AddBook(CreateVM createVM)
         {
-
-            Book book = new Book();
+            Book book = new();
             UploadImage(createVM);
             var imagepath = @"images\books\"+createVM.Image.FileName;
-            book.Id = books.Count + 1;
             book.Author = createVM.Author;
             book.Title = createVM.Title;
             book.Genre = createVM.GenreValues;
             book.Available = createVM.Available;
             book.Image = imagepath;
 
-            books.Add(book);
+            context.Books.Add(book);
+            context.SaveChanges();
 
         }
       

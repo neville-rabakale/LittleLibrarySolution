@@ -15,10 +15,4 @@ namespace LittleLibrary.Views.Book
         public IFormFile? Image { get; set; } = null;
     }
 
-    enum GenreValues
-    {
-        fiction = 0,
-        NonFiction = 1,
-        Childern= 2
-    }
 }
