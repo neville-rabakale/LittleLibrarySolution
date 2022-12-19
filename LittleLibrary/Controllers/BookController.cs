@@ -37,6 +37,12 @@ namespace LittleLibrary.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet("details/{id}")]
+        public IActionResult Details(int id)
+        {
+            return View(service.GetBookDetails(id));
+        }
+
 
     }
 }

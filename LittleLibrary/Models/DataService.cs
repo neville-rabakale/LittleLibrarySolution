@@ -62,6 +62,7 @@ namespace LittleLibrary.Models
             return context.Books
                 .Select( o => new IndexVM 
                 {
+                    Id = o.Id,
                     Author = o.Author,
                     Title = o.Title, 
                     Genre= GetGenreText(o.Genre),
@@ -69,6 +70,20 @@ namespace LittleLibrary.Models
                     Image = o.Image
                 })
                 .ToArray();
+        }
+
+        public DetailsVM GetBookDetails(int id)
+        {
+            return context.Books.Where(o => o.Id == id)
+                .Select(o => new DetailsVM
+                {
+                    Author = o.Author,
+                    Title = o.Title,
+                    Genre = GetGenreText(o.Genre),
+                    Available = o.Available,
+                    Image = o.Image,
+                    Description = o.Description
+                }).Single();
         }
 
         public void AddBook(CreateVM createVM)

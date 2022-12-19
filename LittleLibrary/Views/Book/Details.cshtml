@@ -1,0 +1,32 @@
+﻿@model DetailsVM
+
+<h1>Little Library Book Details </h1>
+<div class="container">
+    <div class="row">
+        <div class="card">
+            @if (Model.Image != null)
+            {
+                <img class="card-img-top" src="../@Model.Image" alt="Card image cap">
+            }
+            else
+            {
+                <img class="card-img-top" src="..." alt="Card image cap">
+            }
+            <div class="card-body">
+            <h4 class="card-title">Title: @Model.Title</h4>
+            <h6 class="card-title">Author: @Model.Author</h6>
+            <p class="card-title">Genre: @Model.Description</p>
+            @if (Model.Available == true)
+            {
+                <h6 class="card-title text-success">Available</h6>
+            }
+            else
+            {
+                <h6 class="card-title text-danger">Unavailable</h6>
+            }
+            </div>
+        </div>
+</div>
+
+
+</div>
